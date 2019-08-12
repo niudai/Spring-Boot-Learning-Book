@@ -1,8 +1,8 @@
 ---
-description: '一本书带你从入门到进阶的 Spring Boot教材, 结合英文最新官网文档和最佳实例, 让你快速上手, 快速运用!'
+description: 'Spring Boot 究竟是什么? 它是 Spring MVC 的替代品吗? 当我们谈论 Spring 的时候, 我们究竟在谈论什么?'
 ---
 
-# Spring Boot 最佳实践
+# 初识 Spring Boot
 
 ### Spring Boot的诞生
 
@@ -58,7 +58,7 @@ description: '一本书带你从入门到进阶的 Spring Boot教材, 结合英�
 
 * spring-boot-starter-data-jpa
 * spring-boot-starter-security
-* _spring-boot-starter-test_
+* spring-boot-starter-test
 
 很明显, 它们三个分别是整合了关于jpa, security, test的相关依赖, 以`spring-boot-starter-data-jpa` 为例, 它整合了`spring-orm` 、`hibernate-entity-manager` 、`spring-data-jpa` 这三个依赖，可见，`spring boot` 并不只整合`Spring` 自己的项目，还会将一些第三方项目整合进来。
 
