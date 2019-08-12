@@ -51,5 +51,23 @@ Endpoint：Web应用向外界提供的API，这里特指Actuator提供的API。
 
 ### 启动项目 - 实际体验
 
-打开 [https://start.spring.io/](https://start.spring.io/) , 进入 Spring Boot Initilizer 页面, 只需选择两个 starter, 分别是 `spring-boot-starter-web` 和 `spring-boot-starter-actuator`
+打开 [https://start.spring.io/](https://start.spring.io/) , 进入 Spring Boot Initilizer 页面, 只需选择两个 starter, 分别是 `spring-boot-starter-web` 和 `spring-boot-starter-actuator` 。很容易理解，我们需要 web 相关的依赖去提供 http 接口服务，因为 actuator 最终也是通过 endpoint 的形式向外暴露 Http based API。
+
+![web &#x548C; actuator](../.gitbook/assets/image%20%281%29.png)
+
+生成项目后，找到我们的配置文件，填写这样一行配置信息：
+
+```text
+management.endpoints.web.exposure.include = *
+```
+
+事实上，只有 health 和 info 这两个 Endpoint 是默认开启的，剩下的都默认关闭，所以我们需要上面的一行去开启所有的 Endpoint，以便于我们的教学展示。
+
+因为 Actuator 提供给我们的这些信息，都是比较敏感的，具有一定安全级别的信息，总不能让所有人都随便访问，所以事实上，Actuator 本身是和 Spring Security 在一起结合使用，当我们的 pom 里声明了 spring-boot-starter-security 后，Actuator 暴露的 API 就自动会接受 Spring Security 的认证，但是为了保证每篇教程的独立性，我们的教学项目中不包含 Spring Security。
+
+
+
+
+
+
 
