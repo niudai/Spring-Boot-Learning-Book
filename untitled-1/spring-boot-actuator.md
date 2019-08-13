@@ -65,9 +65,112 @@ management.endpoints.web.exposure.include = *
 
 因为 Actuator 提供给我们的这些信息，都是比较敏感的，具有一定安全级别的信息，总不能让所有人都随便访问，所以事实上，Actuator 本身是和 Spring Security 在一起结合使用，当我们的 pom 里声明了 spring-boot-starter-security 后，Actuator 暴露的 API 就自动会接受 Spring Security 的认证，但是为了保证每篇教程的独立性，我们的教学项目中不包含 Spring Security。
 
+在终端打开生成的项目文件夹，输入 mvn spring-boot:run 命令，直接启动项目，不需要做任何代码上的操作，因为 Actuator 本身就是独立提供的。
+
+在终端中，看到了一些输出，这是最后三行输出：
+
+```text
+INFO 19956 --- [  restartedMain] o.s.b.a.e.web.EndpointLinksResolver : 
+    Exposing 15 endpoint(s) beneath base path '/actuator'
+INFO 19956 --- [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer : 
+    Tomcat started on port(s): 8080 (http) with context path ''
+INFO 19956 --- [  restartedMain] i.n.g.GsSpringBootActuatorApplication : 
+    Started GsSpringBootActuatorApplication in 3.965 seconds (JVM running for 4.742)
+```
+
+分别告知我们，Actuator 暴露了 15 个 Endpoint，基地址是 /actuator，Tomcat 在8080端口启动了服务，我们的应用 GsSpringBootActuatorApplication 在3.965秒内启动。
+
+很好理解，那么我们现在就直接可以去测试 Actuator 提供给我们的 API 了！
+
+#### **/beans 测试**
+
+好的，我们开始用 Postman 发送请求，对 /beans 进行测试，那么路径就是\`[http://localhost:8080/actuator/beans](http://localhost:8080/actuator/beans)\`：
+
+返回的内容非常之多, 我们节选部分内容:
+
+```text
+"dispatcherServlet": {
+    "aliases": [],
+    "scope": "singleton",
+    "type": "org.springframework.web.servlet.DispatcherServlet",
+    "resource": "class path resource [org/springframework/boot/autoconfigure/web/servlet/DispatcherServletAutoConfiguration$DispatcherServletConfiguration.class]",
+    "dependencies": []
+}
+```
+
+我们看到了这个 bean，你一定对它比较熟悉，它就是我们 Spring MVC 中的 dispatcherServlet，起到分发请求到合适的 servlet 的作用，那么我们看一下它的信息, 属性 aliases \(备注\) 是空，这个不重要，属性 scope 是 singleton，说明 IoC容器工厂返回它的时候，是按照单例模式返回的，也就是说，在整个应用运行的过程中，它就被创建了一次，就一个 dispatchServlet，这也符合我们对 Spring MVC 的理解。
+
+接下来，type 很简单，就是这个 bean 的类型，那当然是 DispatcherServlet 这个类型了，而 resource 值得我们注意，我们打开这个 resource 文件，看到这个：
+
+```text
+@Bean(name = DEFAULT_DISPATCHER_SERVLET_BEAN_NAME)
+public DispatcherServlet dispatcherServlet() {
+   DispatcherServlet dispatcherServlet = new DispatcherServlet();
+   dispatcherServlet.setDispatchOptionsRequest(this.webMvcProperties.isDispatchOptionsRequest());
+   dispatcherServlet.setDispatchTraceRequest(this.webMvcProperties.isDispatchTraceRequest());
+   dispatcherServlet.setThrowExceptionIfNoHandlerFound(this.webMvcProperties.isThrowExceptionIfNoHandlerFound());
+   dispatcherServlet.setEnableLoggingRequestDetails(this.httpProperties.isLogRequestDetails());
+   return dispatcherServlet;
+}
+```
+
+首先，当前文件隶属于  org.springframework.boot.autoconfigure ，所以正是 Spring Boot 在起着自动配置的作用，很显然，我们并没有自己配置 DispatcherServlet ，而上面的代码，就是对它的配置，这也是对 Spring Boot 核心功能 **自动配置** 的一个见证。
+
+换句话说，刚才 Actuator 返回的所有 bean，全部是 Spring Boot 帮我们配置的，我们一个都没配置，这也是 **约定优于配置** 的一个体现。
+
+#### /health 测试
+
+使用 Postman 发送请求：[http://localhost:8080/actuator/beans](http://localhost:8080/actuator/beans)
+
+返回了一个简单json数据：
+
+```text
+{
+    "status": "UP"
+}
+```
+
+没什么高深含义，含义就是 _应用正在运行_ 。
+
+信息很少，因为这个 Endpoint 默认经过 Spring Security 的认证才能返回详细信息，但是我们没有 Spring Security，所以就只能得到省略后的信息，所以我们需要在 application.properties 中加这样一行：
+
+ `management.endpoint.health.show-details = always`
+
+表示任何时候都返回详细的健康信息，然后我们再请求一次:
+
+```java
+{
+    "status": "UP",
+    "details": {
+        "diskSpace": {
+            "status": "UP",
+            "details": {
+                "total": 213890060288,
+                "free": 48489132032,
+                "threshold": 10485760
+            }
+        }
+    }
+}
+```
+
+我们看到还返回了磁盘的信息，显示磁盘运行正常，总共的存储空间是 
+
+```java
+213890060288 bit = 213890060 Kb = 213890 Mb = 213 Gb 
+```
+
+$$
+a
+$$
 
 
 
+\*\*\*\*
 
+{% hint style="info" %}
+单例模式 \(Singleton pattern\): 工厂模式中的特殊情形, 指工厂初始化时就创建该实例, 每次向工厂获取该类型的实例时, 都返回那个相同的实例, 像这种高度可复用的实例, 一般为单例模式, 也是 IoC 模式中的默认模式，与之相对应的是 多例模式 , 即每向工厂请求一个 bean, 工厂就创建并返回一个新的实例, 它的 scope 为 prototype。
+{% endhint %}
 
+在这里，我们能看到所有注册到 IoC 容器中的 bean 的详细信息，比如它的 type, dependencies
 
