@@ -4,6 +4,8 @@ description: 'Spring Boot 究竟是什么? 它是 Spring MVC 的替代品吗? �
 
 # 初识 Spring Boot
 
+>Spring Boot 究竟是什么? 它是 Spring MVC 的替代品吗? 当我们谈论 Spring 的时候, 我们究竟在谈论什么?
+
 ### Spring Boot的诞生
 
 随着`Spring` 框架变得越来越庞大, 内容越来越多, 越来越多的开发者觉得, 搭建一个`Spring` 应用, 即便是一个最基本的, 可运行的应用, 繁杂的配置文件和依赖也消耗了很多程序员的精力, 于是, `Spring Boot` 这个可以自动帮助开发者进行配置, 并且自动讲很多繁杂的依赖进行整合的项目就此诞生。
