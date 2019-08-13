@@ -29,7 +29,7 @@ description: 'Spring Boot 究竟是什么? 它是 Spring MVC 的替代品吗? �
 
 关于第一点, 对于一个基于`Maven` 的`Spring` 工程来说, 为了创建一个包含最基本功能的web应用, 我们需要在`pom.xml` 文件中声明如下依赖:
 
-```text
+```xml
 <dependency>
     <groupId>org.springframework</groupId>
     <artifactId>spring-web</artifactId>
@@ -44,7 +44,7 @@ description: 'Spring Boot 究竟是什么? 它是 Spring MVC 的替代品吗? �
 
 而有了`Spring Boot` 的帮助, `pom.xml` 文件中只需要声明一个依赖项:
 
-```text
+```xml
 <dependency>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-web</artifactId>
@@ -66,7 +66,7 @@ description: 'Spring Boot 究竟是什么? 它是 Spring MVC 的替代品吗? �
 
 在写`Spring` 应用的初期，你一定知道，很多东西都需要一个**配置文件**，比如`Hibernate` 需要 `hibernate.cfg.xml` ，`Tomcat` 需要`server.xml` ,  他们都有各自的繁杂配置, 不仅如此, `Spring` 框架本身也需要各种各样的配置, 比如当我们使用`Hibernate/JPA` 时, 我们需要配置`datasource` , `entity manager factory` , `transaction manager` , 我们需要在配置文件中写出如下:
 
-```text
+```xml
 <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
     destroy-method="close">
     <property name="driverClass" value="${db.driver}" />
