@@ -1,4 +1,4 @@
-> 统一中文文案、排版的相关用法，降低沟通成本，增强译文的规范性和气质，使其更加易读。
+> 统一《零基础入门 Spring Boot》的行文规范。
 
 ## 目录
 
@@ -7,6 +7,9 @@
   - [中文与数字之间需要增加空格](#中文与数字之间需要增加空格)
   - [数字与单位之间需要增加空格](#数字与单位之间需要增加空格)
   - [全角标点与其他字符之间不加空格](#全角标点与其他字符之间不加空格)
+- [专业词汇](#专业词汇)
+- [代码块](#代码块)
+- [文件命名](#文件命名)
 - [标点符号](#标点符号)
   - [不重复使用标点符号](#不重复使用标点符号)
   - [破折号前后需要增加一个空格](#破折号前后需要增加一个空格)
@@ -28,10 +31,6 @@
 - [参考文献](#参考文献)
 
 ## 空格
-
-「有研究显示，打字的时候不喜欢在中文和英文之间加空格的人，感情路都走得很辛苦，有七成的比例会在 34 岁的时候跟自己不爱的人结婚，而其余三成的人最后只能把遗产留给自己的猫。毕竟爱情跟书写都需要适时地留白。
-
-与大家共勉之。」——[vinta/paranoid-auto-spacing](https://github.com/vinta/pangu.js)
 
 ### 中英文之间需要增加空格
 
@@ -96,6 +95,54 @@
 错误：
 
 > 刚刚买了一部 iPhone ，好开心！
+
+## 专业词汇
+
+有些词汇，它们有专业的性质，但是却不是代码，比如 **IoC容器**、 **Spring Boot**、 **Maven**, 这类词, 两边(如果有汉字)空格, 加黑。
+
+正确：
+
+>**IoC容器** 是 **Spring** 框架中的核心元素。
+
+错误：
+
+>**IoC容器**时**Spring**框架中的核心元素。
+
+## 代码块
+
+所有超过一行的代码块，请用 Markdown 的代码块语法包围，并声明 **语言标签**。
+
+正确：
+
+```java
+public class Student {
+    private String name;
+    public void walk() {
+        // do sth
+    }
+}
+```
+
+错误:
+
+public class Student {
+    private String name;
+    public void walk() {
+        // do sth
+    }
+}
+
+错误:
+
+    public class Student {
+    private String name;
+    public void walk() {
+        // do sth
+    }
+
+## 文件命名
+
+文本资源轻易
 
 ## 标点符号
 
@@ -323,15 +370,3 @@
 
 * [Chinese Copywriting Guidelines](https://github.com/mzlogin/chinese-copywriting-guidelines)
 
----
-
-> **掘金翻译计划译者教程：**
->
-> 1. [如何参与翻译](https://github.com/xitu/gold-miner/wiki/%E5%A6%82%E4%BD%95%E5%8F%82%E4%B8%8E%E7%BF%BB%E8%AF%91)
-> 2. [如何提交翻译以及后续更新](https://github.com/xitu/gold-miner/wiki/%E5%85%B3%E4%BA%8E%E5%A6%82%E4%BD%95%E6%8F%90%E4%BA%A4%E7%BF%BB%E8%AF%91%E4%BB%A5%E5%8F%8A%E5%90%8E%E7%BB%AD%E6%9B%B4%E6%96%B0%E7%9A%84%E6%95%99%E7%A8%8B)
-> 3. [如何参与校对及校对的正确姿势](https://github.com/xitu/gold-miner/wiki/%E5%8F%82%E4%B8%8E%E6%A0%A1%E5%AF%B9%E7%9A%84%E6%AD%A3%E7%A1%AE%E5%A7%BF%E5%8A%BF)
-> 4. [文章分享到掘金指南](https://github.com/xitu/gold-miner/wiki/%E5%88%86%E4%BA%AB%E5%88%B0%E6%8E%98%E9%87%91%E6%8C%87%E5%8D%97)
-> 5. [译文排版规则指北](https://github.com/xitu/gold-miner/wiki/%E8%AF%91%E6%96%87%E6%8E%92%E7%89%88%E8%A7%84%E5%88%99%E6%8C%87%E5%8C%97)
-> 6. [十万个为什么](https://github.com/xitu/gold-miner/wiki/%E5%8D%81%E4%B8%87%E4%B8%AA%E4%B8%BA%E4%BB%80%E4%B9%88)
-
----
