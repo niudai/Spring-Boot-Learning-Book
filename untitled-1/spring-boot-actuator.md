@@ -42,6 +42,7 @@ Actuator 为我们提供预设的如下监控 Endpoint \(部分\)：
 | `health` | 返回应用的健康信息 |
 | `httptrace` | 返回最近100次 HTTP 请求的信息 |
 | `metrics` | 返回应用的各项指标信息 |
+| `mappings` | 返回请求和方法映射的信息 |
 
 {% hint style="info" %}
   Actuator：机械系统中的控制，激励模块。
@@ -100,6 +101,12 @@ INFO 19956 --- [  restartedMain] i.n.g.GsSpringBootActuatorApplication :
 
 我们看到了这个 bean，你一定对它比较熟悉，它就是我们 Spring MVC 中的 dispatcherServlet，起到分发请求到合适的 servlet 的作用，那么我们看一下它的信息, 属性 aliases \(备注\) 是空，这个不重要，属性 scope 是 singleton，说明 IoC容器工厂返回它的时候，是按照单例模式返回的，也就是说，在整个应用运行的过程中，它就被创建了一次，就一个 dispatchServlet，这也符合我们对 Spring MVC 的理解。
 
+{% hint style="info" %}
+单例模式 \(Singleton pattern\): 工厂
+
+模式中的特殊情形, 指工厂初始化时就创建该实例, 每次向工厂获取该类型的实例时, 都返回那个相同的实例, 像这种高度可复用的实例, 一般为单例模式, 也是 IoC 模式中的默认模式，与之相对应的是 多例模式 , 即每向工厂请求一个 bean, 工厂就创建并返回一个新的实例, 它的 scope 为 prototype。
+{% endhint %}
+
 接下来，type 很简单，就是这个 bean 的类型，那当然是 DispatcherServlet 这个类型了，而 resource 值得我们注意，我们打开这个 resource 文件，看到这个：
 
 ```text
@@ -156,21 +163,70 @@ public DispatcherServlet dispatcherServlet() {
 
 我们看到还返回了磁盘的信息，显示磁盘运行正常，总共的存储空间是 
 
-```java
-213890060288 bit = 213890060 Kb = 213890 Mb = 213 Gb 
+$$
+213890060288 bit \cong  213890060 Kb \cong 213890Mb \cong  213Gb
+$$
+
+空闲空间约是 48 Gb, 而 threshold , 即是门槛, 它表示应用所需的最小空间, 当磁盘的空闲空间少于 10 Mb 时, diskSpace 的状态就会由 `UP` 转为 `DOWN`, 表示磁盘空间不够了。
+
+#### /mappings 测试
+
+发送请求：[http://localhost:8080/actuator/mappings](http://localhost:8080/actuator/beans)/
+
+在 Spring MVC 中我们知道, 一个请求是通过 dispather servlet 进行一个接收和分发, 然后每个请求最后会被映射到一个方法\(Handler\)上, 去处理请求并返回数据, 那么这个 /mappings 就是给我们提供这样的信息。
+
+```text
+{
+    "handler": "Actuator web endpoint 'beans'",
+    "predicate": "{GET /actuator/beans, produces [application/vnd.spring-boot.actuator.v2+json || application/json]}",
+    "details": {
+        "handlerMethod": {
+            "className": "org.springframework.boot.actuate.endpoint.web.servlet.AbstractWebMvcEndpointHandlerMapping.OperationHandler",
+            "name": "handle",
+            "descriptor": "(Ljavax/servlet/http/HttpServletRequest;Ljava/util/Map;)Ljava/lang/Object;"
+        },
+        "requestMappingConditions": {
+            "consumes": [],
+            "headers": [],
+            "methods": [
+                "GET"
+            ],
+            "params": [],
+            "patterns": [
+                "/actuator/beans"
+            ],
+            "produces": [
+                {
+                    "mediaType": "application/vnd.spring-boot.actuator.v2+json",
+                    "negated": false
+                },
+                {
+                    "mediaType": "application/json",
+                    "negated": false
+                }
+            ]
+        }
+    }
+}
 ```
 
-$$
-a
-$$
+节选了关于 /actuator/beans 的映射信息，可以看到 patterns 属性里面对应我们的请求 url， 在 predicate 属性中显示了我们请求的基本信息，比如，方法（GET），url （/actuator/beans），还有返回的数据类型（Json）。
 
+那么我们也可以得到该请求映射后的 servlet 是哪个类 ：
 
+```text
+AbstractWebMvcEndpointHandlerMapping
+```
 
-\*\*\*\*
+该请求的 handler 方法是:
+
+```text
+OperationHandler
+```
+
+有了  /mappings 的帮助，我们可以将这个数据推送给前端，前端再进行一个可视化渲染，就可以做出类似于 swagger 的图形界面的 API 管理系统了！
 
 {% hint style="info" %}
-单例模式 \(Singleton pattern\): 工厂模式中的特殊情形, 指工厂初始化时就创建该实例, 每次向工厂获取该类型的实例时, 都返回那个相同的实例, 像这种高度可复用的实例, 一般为单例模式, 也是 IoC 模式中的默认模式，与之相对应的是 多例模式 , 即每向工厂请求一个 bean, 工厂就创建并返回一个新的实例, 它的 scope 为 prototype。
+更多 Actuator 的信息，请参考链接：[https://docs.spring.io/spring-boot/docs/current/reference/html/production-ready.html](https://docs.spring.io/spring-boot/docs/current/reference/html/production-ready.html)
 {% endhint %}
-
-在这里，我们能看到所有注册到 IoC 容器中的 bean 的详细信息，比如它的 type, dependencies
 
