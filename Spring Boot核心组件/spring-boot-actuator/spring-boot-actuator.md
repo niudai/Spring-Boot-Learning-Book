@@ -173,7 +173,7 @@ $$
 
 发送请求：[http://localhost:8080/actuator/mappings](http://localhost:8080/actuator/beans)/
 
-在 Spring MVC 中我们知道, 一个请求是通过 dispather servlet 进行一个接收和分发, 然后每个请求最后会被映射到一个方法\(Handler\)上, 去处理请求并返回数据, 那么这个 /mappings 就是给我们提供这样的信息。
+在 Spring MVC 中我们知道, 一个请求是通过 dispatcher servlet 进行一个接收和分发, 然后每个请求最后会被映射到一个方法\(Handler\)上, 去处理请求并返回数据, 那么这个 /mappings 就是给我们提供这样的信息。
 
 ```text
 {
