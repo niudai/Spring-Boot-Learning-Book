@@ -32,7 +32,14 @@ public class Student {
 
 <表格>
 
+| Spring 组件  | 特性 |
+| ----------- | ----------- |
+| Actuator    | 流量监控      |
+| AutoConfigurer   | 自动配置        |
+
 </表格>
+
+>小结: 每章结束要有小节，简单总结下这章所讲内容。
 
 
 
