@@ -7,7 +7,13 @@ TEMPLATE.md // 行文规范
 SUMMARY.md // 目录
 FILE_STRUCTION.md // 项目文件结构
 Spring Boot快速入门 // 快速入门 Spring Boot
-    +- spring-boot-{章节名}.md // 章节主文件
+    +- spring-boot-{章节名} // 章节主文件夹
+        +- spring-boot-{章节名}.md // 章节主 markdown 文档
+        |
+        +- assets
+            |
+            +- code
+            +- images
     +- spring-boot-{章节名}-assets // 该章节静态资源
         |
         +- images // 该章节所有图片
