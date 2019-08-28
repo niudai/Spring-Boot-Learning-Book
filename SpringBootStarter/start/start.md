@@ -121,7 +121,3 @@ public class example {
 ![Image](assets/image/hello.png)
 
 恭喜你！你运行了人生中第一个 **Spring Boot** 项目,接下来的旅程会更加精彩。
-
-
-
-
